@@ -36,7 +36,7 @@ int main()
 
 	while (i < numUsers)
 	{
-		cout << "enter username" << endl << endl;
+		cout << "enter username no spaces" << endl << endl;
 		cin >> user[i];
 		cout << endl << "user " << i+1 << " is " << user[i] << endl << endl;
 
@@ -57,28 +57,28 @@ int main()
 	cin >> Class;
 	cout << endl;
 
-	char option;
+	int option;
 
 	cout << "Pick one of the following option for more Data, \n"
-		<< "P - Pressure gauge 1, \n"
-		<< "Q - Pressure gauge 2, \n"
-		<< "R - Pressure gauge 3, \n"
-		<< "F - Flow rate gauge, \n"
+		<< "1 - Pressure gauge 1, \n"
+		<< "2 - Pressure gauge 2, \n"
+		<< "3 - Pressure gauge 3, \n"
+		<< "4 - Flow rate gauge, \n"
 		<< "Enter which data you want, \n";
 	cin >> option;
 	cout << endl;
 	switch (option)
 	{
-	case 'P':
+	case 1:
 		cout << "data for pressure gauge 1, \n";
 		break;
-	case 'Q':
+	case 2:
 		cout << "data for pressure gauge 2, \n";
 		break;
-	case 'R': 
+	case 3: 
 		cout << "data for pressure gauge 3, \n";
 		break;
-	case 'F':
+	case 4:
 		cout << "data for flow rate gauge, \n";
 		break;
 	default:
