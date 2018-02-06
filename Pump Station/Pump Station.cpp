@@ -1,9 +1,9 @@
 // File name: Pump station
 // Author: John Cole
 // Email Address: jdcole@my.milligan.edu
-// Project Milestone: 3
+// Project Milestone: 3  CHANGE MILESTONE NUMBER
 // Description: Control and measure pump flow station
-// Last Changed: January 31, 2018
+// Last Changed: January 31, 2018 CHANGE DATE
 
 
 
@@ -65,6 +65,10 @@ int main()
 		<< "3 - Pressure gauge 3, \n"
 		<< "4 - Flow rate gauge, \n"
 		<< "Enter which data you want, \n";
+
+	// Let user know that any other option will exit.
+	// Put this on a loop so that user can get more than one set of data without exiting program.
+
 	cin >> option;
 	cout << endl;
 	switch (option)
