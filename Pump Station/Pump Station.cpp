@@ -68,8 +68,7 @@ int main()
 		<< "4 - Flow rate gauge, \n"
 		<< "5 - If you want to exit, \n"
 		<< "Enter which data you want, \n";
-	
-	//int j=0;
+
 
 	
 	cin >> option;
@@ -78,7 +77,7 @@ int main()
 		switch (option)
 		{
 		case 1:
-			cout << "data for pressure gauge 1, \n";
+			cout << "data for pressure gauge 1, \n" << endl;
 			break;
 		case 2:
 			cout << "data for pressure gauge 2, \n" << endl;
@@ -94,14 +93,7 @@ int main()
 			break;
 		default:
 			cout << "invalid input, \n";
-			cout << "If you want additional data pick one of the following option for more Data, \n"
-				<< "1 - Pressure gauge 1, \n"
-				<< "2 - Pressure gauge 2, \n"
-				<< "3 - Pressure gauge 3, \n"
-				<< "4 - Flow rate gauge, \n"
-				<< "5 - If you want to exit, \n"
-				<< "Enter which data you want, \n";
-			//j++;
+			
 		}
 	} while (option != 5);
 	cout << endl;
