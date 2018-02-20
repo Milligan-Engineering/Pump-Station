@@ -44,7 +44,7 @@ int main()
 
 	}
 
-
+// Indicate that date, project name and class name can not have spaces
 	cout << "enter date" << endl << endl;
 	cin >> date;
 	cout << endl;
