@@ -1,9 +1,9 @@
 // File name: Pump station
 // Author: John Cole
 // Email Address: jdcole@my.milligan.edu
-// Project Milestone: 5
+// Project Milestone: 7
 // Description: Control and measure pump flow station
-// Last Changed: Febuary 26, 2018
+// Last Changed: March 2, 2018
 
 
 
