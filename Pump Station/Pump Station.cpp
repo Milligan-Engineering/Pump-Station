@@ -3,13 +3,16 @@
 // Email Address: jdcole@my.milligan.edu
 // Project Milestone: 5
 // Description: Control and measure pump flow station
-// Last Changed: Febuary 14, 2018
+// Last Changed: Febuary 26, 2018
 
 
 
 #include <iostream>
 #include <string>
 #include <cmath>
+#include <fstream>
+#include <cstdlib>
+
 using namespace std;
 
 double avgdata(double dataArray[], int arraysize);
@@ -92,35 +95,75 @@ int main()
 		switch (option)
 		{
 		case 1: 
-			cout << "Enter time in seconds \n" << endl;
-			cin >> time;
-			cout << endl << "Enter samples per second" << endl;
-			cin >> samples;
-			sampleSize1 = ceil(time * samples);
+			int a;
+			do
+			{
+				cout << "Enter how many samples you want per minute" << endl;
+				cin >> sampleSize1;
+				if (sampleSize1 > pgauge1)
+				{
+					cout << "Invalid sample size try agian" << endl;
+				}
+				else
+				{
+					cout << "Enter 1 to continue" << endl;
+					cin >> a;
+				}
+			} while (a != 1);
 			cout << endl << "the average presseure from gauge 1 is: \n" << endl << avgdata(pressure1,sampleSize1)<<endl<<endl;
 			break;
 		case 2:
-			cout << "Enter time in seconds \n" << endl;
-			cin >> time;
-			cout << endl << "Enter samples per second" << endl;
-			cin >> samples;
-			sampleSize1 = ceil(time * samples);
+			int b;
+			do
+			{
+				cout << "Enter how many samples you want per minute" << endl;
+				cin >> sampleSize2;
+				if (sampleSize2 > pgauge2)
+				{
+					cout << "Invalid sample size try agian" << endl;
+				}
+				else
+				{
+					cout << "Enter 1 to continue" << endl;
+					cin >> b;
+				}
+			} while (b != 1);
 			cout << endl << "the average presseure from gauge 2 is: \n" << endl << avgdata(pressure2, sampleSize2) << endl << endl;
 			break;
 		case 3:
-			cout << "Enter time in seconds \n" << endl;
-			cin >> time;
-			cout << endl << "Enter samples per second" << endl;
-			cin >> samples;
-			sampleSize1 = ceil(time * samples);
+			int c;
+			do
+			{
+				cout << "Enter how many samples you want per minute" << endl;
+				cin >> sampleSize3;
+				if (sampleSize3 > pgauge3)
+				{
+					cout << "Invalid sample size try agian" << endl;
+				}
+				else
+				{
+					cout << "Enter 1 to continue" << endl;
+					cin >> c;
+				}
+			} while (c != 1);
 			cout << endl << "the average presseure from gauge 3 is: \n" << endl << avgdata(pressure3, sampleSize3) << endl << endl;
 			break;
 		case 4:
-			cout << "Enter time in seconds \n" << endl;
-			cin >> time;
-			cout << endl << "Enter samples per second" << endl;
-			cin >> samples;
-			sampleSize1 = ceil(time * samples);
+			int d;
+			do
+			{
+				cout << "Enter how many samples you want per minute" << endl;
+				cin >> sampleSize4;
+				if (sampleSize4 > fgauge)
+				{
+					cout << "Invalid sample size try agian" << endl;
+				}
+				else
+				{
+					cout << "Enter 1 to continue" << endl;
+					cin >> d;
+				}
+			} while (d != 1);
 			cout << endl << "the average flow rate is: \n" << endl << avgdata(flow, sampleSize4) << endl << endl;
 			break;
 		case 5:
@@ -154,6 +197,22 @@ int main()
 
 	if (currentwaterlevel < 23)
 		cout << "WANRING LOW WATER LEVEL" << endl;
+
+	char outFileName[16];
+	ofstream outStream;
+	cout << "Enter file to export to (maximun 15 characters): \n";
+	cin >> outFileName;
+	cout << endl << "Data will export to file " << outFileName << endl;
+
+	outStream.open(outFileName);
+	if (outStream.fail())
+	{
+		cout << "Output file opening failed.\n";
+		char wait;
+		cin >> wait;
+		exit(1);
+
+	}
 
 	return(0);
 
