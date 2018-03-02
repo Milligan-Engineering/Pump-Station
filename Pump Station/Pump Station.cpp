@@ -96,8 +96,12 @@ int main()
 			cin >> time;
 			cout << endl << "Enter samples per second" << endl;
 			cin >> samples;
+			// ceil returns a double value. Use static_cast<int> here and elsewhere to eliminate warning.
 			sampleSize1 = ceil(time * samples);
 			cout << endl << "the average presseure from gauge 1 is: \n" << endl << avgdata(pressure1,sampleSize1)<<endl<<endl;
+// Not getting value from routine. Problem occurs when samplesize is greater than arrays defined above (15). 
+// For testing limint samplesize or generate randome test arrays of sample size.
+// Even with the latter, you will need to limit the size.
 			break;
 		case 2:
 			cout << "Enter time in seconds \n" << endl;
