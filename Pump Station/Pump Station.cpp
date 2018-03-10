@@ -3,7 +3,7 @@
 // Email Address: jdcole@my.milligan.edu
 // Project Milestone: 7
 // Description: Control and measure pump flow station
-// Last Changed: March 2, 2018
+// Last Changed: March 9, 2018
 
 
 
@@ -11,45 +11,45 @@
 #include <string>
 #include <cmath>
 #include <fstream>
-#include <stdlib.h>
-
+#include <cstdlib>
 using namespace std;
 
 double avgdata(double dataArray[], int arraysize);
 //precondition: array for the gauge passed through data array and sample size of the data array 
 //postcondition: we should get the average data of the specified data array returned through avgdata
+void StudentProgram();
+void TeacherSettings();
 void StudentSetup();
 void SystemControl();
 void DataOptions();
 void AvgDataSwitch();
-
-
-const int pgauge1=15, pgauge2=15, pgauge3=15, fgauge=15;// max array size
-double pressure1[pgauge1] = { 3.6,6.8,5,2.4,9.4,5,8.5,4.5,7.2,9.5,22,4.5,2,15,6.5};
-double pressure2[pgauge2] = {3.9,2.2,8.9,5.6,4.2,5,6,4,5,8,5,5.5,10,4.5,6.3};
-double pressure3[pgauge3] = {1.5,6.5,4.3,8.6,7.6,5.4,8,2.5,2.7,6.5,10,2,5,8,9};
-double flow[fgauge] = {1.2,7.5,8,6.5,9.4,7.6,8.5,4,5,7.6,8,15,16,2,6.5};
-int time, sampleSize1, sampleSize2, sampleSize3, sampleSize4;
-double sum,avgdata1;
-
-
+void FileExport();
 
 int main()
 {
-	
+
+	{
+		int password;
+
+		cout << "If teacher enter pasword" << endl;
+		cin >> password;
+
+		if (password != 1234)
+		{
+			StudentProgram();
+		}
+
+		else
+		{
+			TeacherSettings();
+		}
+	}
 	// Provide space for the following information 
 	
 	double density;
 	double volumeOfcontainer;
-
-
-	StudentSetup();
-	SystemControl();
-	DataOptions();
 	
-
-	
-	cout << endl;
+	/*cout << endl;
 	cout << "enter density of liquid" << endl << endl;
 	cin >> density;  //pounds per cubic feet
 	cout << " lb/ft^3" << endl << endl;
@@ -71,23 +71,8 @@ int main()
 	cout << endl;
 
 	if (currentwaterlevel < 23)
-		cout << "WANRING LOW WATER LEVEL" << endl;
+		cout << "WANRING LOW WATER LEVEL" << endl;*/
 
-	char outFileName[16];
-	ofstream outStream;
-	cout << "Enter file to export to (maximun 15 characters): \n";
-	cin >> outFileName;
-	cout << endl << "Data will export to file " << outFileName << endl;
-
-	outStream.open(outFileName);
-	if (outStream.fail())
-	{
-		cout << "Output file opening failed.\n";
-		char wait;
-		cin >> wait;
-		exit(1);
-
-	}
 
 	return(0);
 
@@ -98,14 +83,57 @@ int main()
 
 }
 
+void StudentProgram()
+{
+	StudentSetup();
+	SystemControl();
+	DataOptions();
+}
+
+void TeacherSettings()
+{
+	int option;
+
+	do
+	{
+		cout << "What would you like to do today? \n"
+			<< "Enter 1 to set limits \n"
+			<< "Enter 2 to enable functions \n"
+			<< "Enter 3 to run program as student \n"
+			<< "Enter 4 to exit program \n";
+		cin >> option;
+		switch (option)
+		{
+			case 1:
+				cout << "set limits \n" << endl;
+				break;
+			case 2:
+				cout << "enable funtions \n" << endl;
+				break;
+			case 3: 
+				StudentProgram();
+				break;
+			case 4:
+				cout << "program exited \n" << endl;
+				break;
+			default:
+				cout << "invalid input \n" << endl;
+		}
+
+	} while (option != 4);
+
+	return;
+}
+
 double avgdata(double dataArray[], int arraysize)
 {
+	double sum, avgdata1;
 	int i;
 	
 	for (i = 0; i < arraysize; i++)
 	{
-		sum = pressure1[i] + pressure1[i + 1];
-		pressure1[i + 1] = sum;
+		sum = dataArray[i] + dataArray[i + 1];
+		dataArray[i + 1] = sum;
 	}
 	avgdata1 = sum / arraysize;
 	return(avgdata1);
@@ -196,12 +224,14 @@ void DataOptions()
 			cout << "Data Visualization \n";
 			break;
 		case 3:
+			FileExport();
 			cout << "program exited \n";
 			break;
 		default:
 			cout << "invalid input \n";
 
-		}while (option != 3)
+		}
+	} while (option != 3);
 
 	return;
 
@@ -209,6 +239,12 @@ void DataOptions()
 
 void AvgDataSwitch()
 {
+	const int pgauge1 = 15, pgauge2 = 15, pgauge3 = 15, fgauge = 15;// max array size
+	double pressure1[pgauge1] = { 3.6,6.8,5,2.4,9.4,5,8.5,4.5,7.2,9.5,22,4.5,2,15,6.5 };
+	double pressure2[pgauge2] = { 3.9,2.2,8.9,5.6,4.2,5,6,4,5,8,5,5.5,10,4.5,6.3 };
+	double pressure3[pgauge3] = { 1.5,6.5,4.3,8.6,7.6,5.4,8,2.5,2.7,6.5,10,2,5,8,9 };
+	double flow[fgauge] = { 1.2,7.5,8,6.5,9.4,7.6,8.5,4,5,7.6,8,15,16,2,6.5 };
+	int time, sampleSize1, sampleSize2, sampleSize3, sampleSize4;
 	int option;
 
 	do
@@ -309,4 +345,22 @@ void AvgDataSwitch()
 
 	return;
 
+}
+
+void FileExport()
+{
+	char outFileName[16];
+	ofstream outStream;
+	cout << "Enter file to export to (maximun 15 characters): \n";
+	cin >> outFileName;
+	cout << endl << "Data will export to file " << outFileName << endl;
+
+	outStream.open(outFileName);
+	if (outStream.fail())
+	{
+		cout << "Output file opening failed.\n";
+		char wait;
+		cin >> wait;
+		exit(1);
+	}
 }
