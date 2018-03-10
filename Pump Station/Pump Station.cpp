@@ -3,7 +3,7 @@
 // Email Address: jdcole@my.milligan.edu
 // Project Milestone: 7
 // Description: Control and measure pump flow station
-// Last Changed: March 2, 2018
+// Last Changed: March 9, 2018
 
 
 
@@ -201,7 +201,8 @@ void DataOptions()
 		default:
 			cout << "invalid input \n";
 
-		}while (option != 3)
+		}
+	} while (option != 3); //Needed another brace and also was missing semilcolon after while (option != 3) - Casey
 
 	return;
 
