@@ -3,7 +3,7 @@
 // Email Address: jdcole@my.milligan.edu
 // Project Milestone: 7
 // Description: Control and measure pump flow station
-// Last Changed: March 9, 2018
+// Last Changed: March 14, 2018
 
 
 
@@ -25,62 +25,21 @@ void DataOptions();
 void AvgDataSwitch();
 void FileExport();
 
+const int MaxSampSize = 15;// max array size
+double pressure1[MaxSampSize] = { 3.6,6.8,5,2.4,9.4,5,8.5,4.5,7.2,9.5,22,4.5,2,15,6.5 };
+double pressure2[MaxSampSize] = { 3.9,2.2,8.9,5.6,4.2,5,6,4,5,8,5,5.5,10,4.5,6.3 };
+double pressure3[MaxSampSize] = { 1.5,6.5,4.3,8.6,7.6,5.4,8,2.5,2.7,6.5,10,2,5,8,9 };
+double flow[MaxSampSize] = { 1.2,7.5,8,6.5,9.4,7.6,8.5,4,5,7.6,8,15,16,2,6.5 };
+int SampleTime[MaxSampSize] = { 5,10,15,20,25,30,35,40,45,50,55,60,65,70,75 };
+int sampleSize, WaterLevel, WaterPressure, FlowRate;
+
 int main()
 {
 
-	{
-		int password;
-
-		cout << "If teacher enter pasword" << endl;
-		cin >> password;
-
-		if (password != 1234)
-		{
-			StudentProgram();
-		}
-
-		else
-		{
-			TeacherSettings();
-		}
-	}
-	// Provide space for the following information 
-	
-	double density;
-	double volumeOfcontainer;
-	
-	/*cout << endl;
-	cout << "enter density of liquid" << endl << endl;
-	cin >> density;  //pounds per cubic feet
-	cout << " lb/ft^3" << endl << endl;
-
-	cout << "enter volume of the container" << endl << endl;
-	cin >> volumeOfcontainer;	//cubic feet
-	cout << " ft^3" << endl << endl;
-
-
-	double mass;	//pounds
-	mass = density * volumeOfcontainer;
-	cout << "The mass is : " << mass << " lbs" << endl <<endl; 
-
-	int waterlevel,currentwaterlevel;  //measured in inches from the bottom of the tank
-	waterlevel = 23;
-	
-	cout << "enter current water level " << endl << endl;
-	cin >> currentwaterlevel; 
-	cout << endl;
-
-	if (currentwaterlevel < 23)
-		cout << "WANRING LOW WATER LEVEL" << endl;*/
-
+	TeacherSettings();
+	StudentProgram();
 
 	return(0);
-
-	
-
-	
-
-
 }
 
 void StudentProgram()
@@ -90,50 +49,39 @@ void StudentProgram()
 	DataOptions();
 }
 
-void TeacherSettings()
+void TeacherSettings() 
 {
-	int option;
+	char inFileName[16];
 
-	do
+	ifstream inStream;
+	
+	cout << "Enter in the file you wish to import (maximum of 15 characters): \n";
+	cin >> inFileName;
+
+	inStream.open(inFileName);
+	if (inStream.fail())
 	{
-		cout << "What would you like to do today? \n"
-			<< "Enter 1 to set limits \n"
-			<< "Enter 2 to enable functions \n"
-			<< "Enter 3 to run program as student \n"
-			<< "Enter 4 to exit program \n";
-		cin >> option;
-		switch (option)
-		{
-			case 1:
-				cout << "set limits \n" << endl;
-				break;
-			case 2:
-				cout << "enable funtions \n" << endl;
-				break;
-			case 3: 
-				StudentProgram();
-				break;
-			case 4:
-				cout << "program exited \n" << endl;
-				break;
-			default:
-				cout << "invalid input \n" << endl;
-		}
-
-	} while (option != 4);
-
+		cout << "Input file opening failed. \n";
+		char wait;
+		cin >> wait;
+		exit(1);
+	}
+	
+	inStream >> WaterLevel >> WaterPressure >> FlowRate;
+	
+	inStream.close();
 	return;
 }
 
 double avgdata(double dataArray[], int arraysize)
 {
-	double sum, avgdata1;
+	double sum = 0;
+	double avgdata1;
 	int i;
 	
 	for (i = 0; i < arraysize; i++)
 	{
-		sum = dataArray[i] + dataArray[i + 1];
-		dataArray[i + 1] = sum;
+		sum += dataArray[i];
 	}
 	avgdata1 = sum / arraysize;
 	return(avgdata1);
@@ -199,6 +147,24 @@ void SystemControl()
 	default:
 		cout << "system shut off \n" << endl;	
 	}
+
+	double CurrentWL =27, CurrentWP =4, CurrentFR =2;
+	
+	if (CurrentWL < WaterLevel)
+	{
+		cout << "ALARM LOW WATER LEVEL ALL SYSTEMS SHUT OFF \n";
+	}
+
+	if (CurrentWP > WaterPressure)
+	{
+		cout << "ALARM HIGH WATER PRESSURE ALL SYSTEMS SHUT OFF \n";
+	}
+
+	if (CurrentFR < FlowRate)
+	{
+		cout << "ALARM LOW FLOW RATE ALL SYSTEMS SHUT OFF \n";
+	}
+
 	return;
 
 }
@@ -218,6 +184,7 @@ void DataOptions()
 		switch (option)
 		{
 		case 1:
+			AvgDataSwitch();
 			cout << "Data Aalysis \n";
 			break;
 		case 2:
@@ -239,13 +206,23 @@ void DataOptions()
 
 void AvgDataSwitch()
 {
-	const int pgauge1 = 15, pgauge2 = 15, pgauge3 = 15, fgauge = 15;// max array size
-	double pressure1[pgauge1] = { 3.6,6.8,5,2.4,9.4,5,8.5,4.5,7.2,9.5,22,4.5,2,15,6.5 };
-	double pressure2[pgauge2] = { 3.9,2.2,8.9,5.6,4.2,5,6,4,5,8,5,5.5,10,4.5,6.3 };
-	double pressure3[pgauge3] = { 1.5,6.5,4.3,8.6,7.6,5.4,8,2.5,2.7,6.5,10,2,5,8,9 };
-	double flow[fgauge] = { 1.2,7.5,8,6.5,9.4,7.6,8.5,4,5,7.6,8,15,16,2,6.5 };
-	int time, sampleSize1, sampleSize2, sampleSize3, sampleSize4;
+	int a;
 	int option;
+
+	do
+	{
+		cout << "Enter how many samples you want per minute" << endl;
+		cin >> sampleSize;
+		if (sampleSize > MaxSampSize)
+		{
+			cout << "Invalid sample size try agian" << endl;
+		}
+		else
+		{
+			cout << "Enter 1 to continue" << endl;
+			cin >> a;
+		}
+	} while (a != 1);
 
 	do
 	{
@@ -263,76 +240,16 @@ void AvgDataSwitch()
 		switch (option)
 		{
 		case 1:
-			int a;
-			do
-			{
-				cout << "Enter how many samples you want per minute" << endl;
-				cin >> sampleSize1;
-				if (sampleSize1 > pgauge1)
-				{
-					cout << "Invalid sample size try agian" << endl;
-				}
-				else
-				{
-					cout << "Enter 1 to continue" << endl;
-					cin >> a;
-				}
-			} while (a != 1);
-			cout << endl << "the average presseure from gauge 1 is: \n" << endl << avgdata(pressure1, sampleSize1) << endl << endl;
+			cout << endl << "the average presseure from gauge 1 is: \n" << endl << avgdata(pressure1, sampleSize) << endl << endl;
 			break;
 		case 2:
-			int b;
-			do
-			{
-				cout << "Enter how many samples you want per minute" << endl;
-				cin >> sampleSize2;
-				if (sampleSize2 > pgauge2)
-				{
-					cout << "Invalid sample size try agian" << endl;
-				}
-				else
-				{
-					cout << "Enter 1 to continue" << endl;
-					cin >> b;
-				}
-			} while (b != 1);
-			cout << endl << "the average presseure from gauge 2 is: \n" << endl << avgdata(pressure2, sampleSize2) << endl << endl;
+			cout << endl << "the average presseure from gauge 2 is: \n" << endl << avgdata(pressure2, sampleSize) << endl << endl;
 			break;
 		case 3:
-			int c;
-			do
-			{
-				cout << "Enter how many samples you want per minute" << endl;
-				cin >> sampleSize3;
-				if (sampleSize3 > pgauge3)
-				{
-					cout << "Invalid sample size try agian" << endl;
-				}
-				else
-				{
-					cout << "Enter 1 to continue" << endl;
-					cin >> c;
-				}
-			} while (c != 1);
-			cout << endl << "the average presseure from gauge 3 is: \n" << endl << avgdata(pressure3, sampleSize3) << endl << endl;
+			cout << endl << "the average presseure from gauge 3 is: \n" << endl << avgdata(pressure3, sampleSize) << endl << endl;
 			break;
 		case 4:
-			int d;
-			do
-			{
-				cout << "Enter how many samples you want per minute" << endl;
-				cin >> sampleSize4;
-				if (sampleSize4 > fgauge)
-				{
-					cout << "Invalid sample size try agian" << endl;
-				}
-				else
-				{
-					cout << "Enter 1 to continue" << endl;
-					cin >> d;
-				}
-			} while (d != 1);
-			cout << endl << "the average flow rate is: \n" << endl << avgdata(flow, sampleSize4) << endl << endl;
+			cout << endl << "the average flow rate is: \n" << endl << avgdata(flow, sampleSize) << endl << endl;
 			break;
 		case 5:
 			cout << "you have exited" << endl;
@@ -363,4 +280,15 @@ void FileExport()
 		cin >> wait;
 		exit(1);
 	}
+
+	outStream << "Gauge ," << "P1 ," << "P2 ," << "P3 ," << "F1 ," << endl
+		<< "Average ," << avgdata(pressure1, sampleSize) << "," << avgdata(pressure2, sampleSize) << ","
+		<< avgdata(pressure3, sampleSize) << "," << avgdata(flow, sampleSize) << endl;
+	for (int i = 0; i < sampleSize; i++)
+	{
+		outStream << SampleTime[i] << "," << pressure1[i] << "," << pressure2[i] << "," << pressure3[i] << ","
+			<< flow[i] << endl;
+	}
+	
+	return;
 }
