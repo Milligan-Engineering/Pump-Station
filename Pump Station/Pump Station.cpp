@@ -20,7 +20,7 @@ double avgdata(double dataArray[], int arraysize);
 void StudentProgram();
 void TeacherSettings();
 void StudentSetup();
-void SystemControl();
+void SystemControl(); 
 void DataOptions();
 void AvgDataSwitch();
 void FileExport();
@@ -292,3 +292,5 @@ void FileExport()
 	
 	return;
 }
+
+
