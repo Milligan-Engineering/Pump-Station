@@ -12,6 +12,8 @@
 #include <cmath>
 #include <fstream>
 #include <cstdlib>
+#include <Gauge.h>
+#include <flow.h>
 using namespace std;
 
 double avgdata(double dataArray[], int arraysize);
@@ -31,7 +33,14 @@ double pressure2[MaxSampSize] = { 3.9,2.2,8.9,5.6,4.2,5,6,4,5,8,5,5.5,10,4.5,6.3
 double pressure3[MaxSampSize] = { 1.5,6.5,4.3,8.6,7.6,5.4,8,2.5,2.7,6.5,10,2,5,8,9 };
 double flow[MaxSampSize] = { 1.2,7.5,8,6.5,9.4,7.6,8.5,4,5,7.6,8,15,16,2,6.5 };
 int SampleTime[MaxSampSize] = { 5,10,15,20,25,30,35,40,45,50,55,60,65,70,75 };
-int sampleSize, WaterLevel, WaterPressure, FlowRate;
+int sampleSize;
+
+struct Alarms
+{
+	int WaterLevel, WaterPressure, FlowRate;
+};
+
+Alarms systemAlarms;
 
 int main()
 {
@@ -49,7 +58,7 @@ void StudentProgram()
 	DataOptions();
 }
 
-void TeacherSettings() 
+/*void TeacherSettings() 
 {
 	char inFileName[16];
 
@@ -60,7 +69,6 @@ void TeacherSettings()
 
 	inStream.open(inFileName);
 	if (inStream.fail())
-	{
 		cout << "Input file opening failed. \n";
 		char wait;
 		cin >> wait;
@@ -71,7 +79,7 @@ void TeacherSettings()
 	
 	inStream.close();
 	return;
-}
+}*/
 
 double avgdata(double dataArray[], int arraysize)
 {
@@ -133,6 +141,8 @@ void StudentSetup()
 
 void SystemControl()
 {
+	
+
 	int control;
 	cout << "Do you want to turn on the system? \n"
 		<< "Enter 1 for yes \n"
@@ -150,17 +160,17 @@ void SystemControl()
 
 	double CurrentWL =27, CurrentWP =4, CurrentFR =2;
 	
-	if (CurrentWL < WaterLevel)
+	if (CurrentWL < systemAlarms.WaterLevel)
 	{
 		cout << "ALARM LOW WATER LEVEL ALL SYSTEMS SHUT OFF \n";
 	}
 
-	if (CurrentWP > WaterPressure)
+	if (CurrentWP > systemAlarms.WaterPressure)
 	{
 		cout << "ALARM HIGH WATER PRESSURE ALL SYSTEMS SHUT OFF \n";
 	}
 
-	if (CurrentFR < FlowRate)
+	if (CurrentFR < systemAlarms.FlowRate)
 	{
 		cout << "ALARM LOW FLOW RATE ALL SYSTEMS SHUT OFF \n";
 	}

@@ -118,7 +118,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="flow.cpp" />
+    <ClCompile Include="Guage.cpp" />
     <ClCompile Include="Pump Station.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="flow.h" />
+    <ClInclude Include="Guage.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
