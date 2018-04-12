@@ -5,7 +5,9 @@
 // Description: Control and measure pump flow station
 // Last Changed: March 14, 2018
 
-
+// Keep your header file up to date.
+// Make a standard header so these do not need to be repeated in each header file.
+// Does not compile,
 
 #include <iostream>
 #include <string>
@@ -14,6 +16,8 @@
 #include <cstdlib>
 #include <Gauge.h>
 #include <flow.h>
+#include <time.h>   // Added for random number generation
+
 using namespace std;
 
 double avgdata(double dataArray[], int arraysize);
@@ -34,6 +38,15 @@ double pressure3[MaxSampSize] = { 1.5,6.5,4.3,8.6,7.6,5.4,8,2.5,2.7,6.5,10,2,5,8
 double flow[MaxSampSize] = { 1.2,7.5,8,6.5,9.4,7.6,8.5,4,5,7.6,8,15,16,2,6.5 };
 int SampleTime[MaxSampSize] = { 5,10,15,20,25,30,35,40,45,50,55,60,65,70,75 };
 int sampleSize;
+// Structure is technically Ok but does not seem very useful. Structures are more geared toward collecting data
+// that is of different types/nature. Would  NumberofSamples, SamplingRate, and SampleDuration be a better candidate?
+
+void genData(double data, double highVal, double lowVal, int samples, double period);
+//Preconditions: The high and low values of the generated data are given in highVal and lowVal
+//				The number of random values generated is given in samples.
+//				The properly sized array, data, should be declared.
+//				The interval between samples is given in period in seconds.
+//Postcondtions: Uniform random numbers are stored in data at an interval given by rate.
 
 struct Alarms
 {
@@ -41,6 +54,9 @@ struct Alarms
 };
 
 Alarms systemAlarms;
+
+//No Guage objects declared.
+//No Flow ojects declared.
 
 int main()
 {
@@ -221,6 +237,8 @@ void AvgDataSwitch()
 
 	do
 	{
+	// NOT USING OBJECTS
+		
 		cout << "Enter how many samples you want per minute" << endl;
 		cin >> sampleSize;
 		if (sampleSize > MaxSampSize)
@@ -250,6 +268,7 @@ void AvgDataSwitch()
 		switch (option)
 		{
 		case 1:
+// NOT USING MEMBER FUNCTIONS
 			cout << endl << "the average presseure from gauge 1 is: \n" << endl << avgdata(pressure1, sampleSize) << endl << endl;
 			break;
 		case 2:
@@ -302,5 +321,22 @@ void FileExport()
 	
 	return;
 }
+
+void genData(double data, double highVal, double lowVal, int samples)
+{
+
+	long int currentTime = static_cast<long int>(time(0)); //Generate random seed
+	srand(currentTime);
+	double avgVal = (highVal + lowVal) / 2;
+	double range = (highVal - lowVal);
+
+	for (int i = 0; i < samples; i++)
+	{
+		data[i] = avgVal + rand() % range; // assign randome number
+	}
+
+
+}
+
 
 
