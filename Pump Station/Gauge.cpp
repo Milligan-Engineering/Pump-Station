@@ -1,12 +1,12 @@
-#include "Guage.h"
-#include <isostream>
+#include "Gauge.h"
+#include <iostream>
 #include <string>
 #include <cmath>
 #include <cstdlib>
 using namespace std;
 
 
-double Guage::avgdata(double dataArray[], int arraysize)
+double Gauge::avgdata(double dataArray[], int arraysize)
 {
 	double sum = 0;
 	double avgdata1;
@@ -20,22 +20,22 @@ double Guage::avgdata(double dataArray[], int arraysize)
 	return(avgdata1);
 }
 
-//void Guage::set(string Gaugename, double Gaugedata, int samplesize)
+//void Gauge::set(string Gaugename, double Gaugedata, int samplesize)
 //{
 	
 //}
 
-int Guage::getSampSize()
+int Gauge::getSampSize()
 {
 	return SampSize;
 }
 
-double Guage::getDataArray()
+double Gauge::getDataArray()
 {
 	return DataArray;
 }
 
 
-Guage::Guage(int SampSize)
+Gauge::Gauge(int SampSize)
 {
 }

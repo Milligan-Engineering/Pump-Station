@@ -3,10 +3,10 @@
 #include <string>
 #include <cmath>
 #include <cstdlib>
-#include "Guage.h"
+#include "Gauge.h"
 using namespace std;
 
-class flow : public Guage 
+class flow : public Gauge 
 {
 public:
 	double veloc(double avgpress, double density, double dia1, double dia2);
