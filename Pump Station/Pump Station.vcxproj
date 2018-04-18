@@ -118,7 +118,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\Documents\AY17_18\EENG221_S18\Programs\Test\Test\genData.cpp" />
     <ClCompile Include="flow.cpp" />
     <ClCompile Include="Gauge.cpp" />
     <ClCompile Include="Pump Station.cpp" />

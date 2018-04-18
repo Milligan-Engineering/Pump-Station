@@ -5,24 +5,22 @@
 #include <cstdlib>
 using namespace std;
 
-class Guage
+class Gauge
 {
 public:
-	Guage(int SampSize);
-	double avgdata(double dataArray[], int arraysize);
+	double avgdata();
 	// average data function
-	//void set(int SampSize, double DataArray[]);
+	void setgauge(int SampSize);
+	void setArrayValue(int i,double data);
 	double getDataArray();
 	int getSampSize();
-	Guage(int SampSize);
+	double getAvgdata();
 
 
 private:
 	string name;
-	double DataArray[];
+	double DataArray[1000], Avgdata;
 	int SampSize;
 
-	
-	~Guage();
 };
 

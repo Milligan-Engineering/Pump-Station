@@ -1,21 +1,17 @@
 // File name: Pump station
 // Author: John Cole
 // Email Address: jdcole@my.milligan.edu
-// Project Milestone: 7
+// Project Milestone: 9
 // Description: Control and measure pump flow station
-// Last Changed: March 14, 2018
-
-// Keep your header file up to date.
-// Make a standard header so these do not need to be repeated in each header file.
-// Does not compile,
+// Last Changed: March 18, 2018
 
 #include <iostream>
 #include <string>
 #include <cmath>
 #include <fstream>
 #include <cstdlib>
-#include <Gauge.h>
-#include <flow.h>
+#include "Gauge.h"
+#include "flow.h"
 #include <time.h>   // Added for random number generation
 
 using namespace std;
@@ -24,24 +20,26 @@ double avgdata(double dataArray[], int arraysize);
 //precondition: array for the gauge passed through data array and sample size of the data array 
 //postcondition: we should get the average data of the specified data array returned through avgdata
 void StudentProgram();
-void TeacherSettings();
+//void TeacherSettings();
 void StudentSetup();
 void SystemControl(); 
 void DataOptions();
-void AvgDataSwitch();
+void genArray();
+//void AvgDataSwitch();
+void gentime();
 void FileExport();
 
-const int MaxSampSize = 15;// max array size
-double pressure1[MaxSampSize] = { 3.6,6.8,5,2.4,9.4,5,8.5,4.5,7.2,9.5,22,4.5,2,15,6.5 };
+const int MaxSampSize = 1000;// max array size
+/*double pressure1[MaxSampSize] = { 3.6,6.8,5,2.4,9.4,5,8.5,4.5,7.2,9.5,22,4.5,2,15,6.5 };
 double pressure2[MaxSampSize] = { 3.9,2.2,8.9,5.6,4.2,5,6,4,5,8,5,5.5,10,4.5,6.3 };
 double pressure3[MaxSampSize] = { 1.5,6.5,4.3,8.6,7.6,5.4,8,2.5,2.7,6.5,10,2,5,8,9 };
 double flow[MaxSampSize] = { 1.2,7.5,8,6.5,9.4,7.6,8.5,4,5,7.6,8,15,16,2,6.5 };
 int SampleTime[MaxSampSize] = { 5,10,15,20,25,30,35,40,45,50,55,60,65,70,75 };
-int sampleSize;
+int sampleSize;*/
 // Structure is technically Ok but does not seem very useful. Structures are more geared toward collecting data
 // that is of different types/nature. Would  NumberofSamples, SamplingRate, and SampleDuration be a better candidate?
 
-void genData(double data, double highVal, double lowVal, int samples, double period);
+void genData(double data[], double avgVal[], double rangeVal[], int numVal, double period);
 //Preconditions: The high and low values of the generated data are given in highVal and lowVal
 //				The number of random values generated is given in samples.
 //				The properly sized array, data, should be declared.
@@ -50,19 +48,27 @@ void genData(double data, double highVal, double lowVal, int samples, double per
 
 struct Alarms
 {
-	int WaterLevel, WaterPressure, FlowRate;
+	int WaterLevel, WaterPressure;
+	double FlowRate;
 };
 
 Alarms systemAlarms;
+
+Gauge P1;
+Gauge P2;
+Gauge P3;
+flow F1;
 
 //No Guage objects declared.
 //No Flow ojects declared.
 
 int main()
 {
-
-	TeacherSettings();
+	char opt;
+	//TeacherSettings();
 	StudentProgram();
+	cout << "Enter any key to exit \n";
+	cin >> opt;
 
 	return(0);
 }
@@ -152,6 +158,14 @@ void StudentSetup()
 	cin >> Class;
 	cout << endl;
 
+	cout << "Enter Low Water Level Alarm \n";
+	cin >> systemAlarms.WaterLevel;
+	cout << endl<< "Enter High Water Pressure Alarm \n";
+	cin >> systemAlarms.WaterPressure;
+	cout << endl << "Enter Low Flow Rate Alarm \n";
+	cin >> systemAlarms.FlowRate;
+
+
 	return;
 }
 
@@ -173,23 +187,9 @@ void SystemControl()
 	default:
 		cout << "system shut off \n" << endl;	
 	}
-
-	double CurrentWL =27, CurrentWP =4, CurrentFR =2;
 	
-	if (CurrentWL < systemAlarms.WaterLevel)
-	{
-		cout << "ALARM LOW WATER LEVEL ALL SYSTEMS SHUT OFF \n";
-	}
-
-	if (CurrentWP > systemAlarms.WaterPressure)
-	{
-		cout << "ALARM HIGH WATER PRESSURE ALL SYSTEMS SHUT OFF \n";
-	}
-
-	if (CurrentFR < systemAlarms.FlowRate)
-	{
-		cout << "ALARM LOW FLOW RATE ALL SYSTEMS SHUT OFF \n";
-	}
+	genArray();
+	
 
 	return;
 
@@ -197,40 +197,38 @@ void SystemControl()
 
 void DataOptions()
 {
-	int option;
+	double Density, Dia1, Dia2;
+	int SampSize;
 
-	do
-	{
-		cout << "What do you want to do with the data? \n"
-			<< "Enter 1 for data analysis \n"
-			<< "Enter 2 for data vizualization \n"
-			<< "Enter 3 to exit program \n";
-		cin >> option;
+	cout << "Enter the outer Diameter \n";
+	cin >> Dia1;
+	cout << endl << "Enter the inner Diameter \n";
+	cin >> Dia2;
+	cout << endl << "Enter the liquid density \n";
+	cin >> Density;
+	cout << endl << "Enter number of samples (<1000) \n";
+	cin >> SampSize;
 
-		switch (option)
-		{
-		case 1:
-			AvgDataSwitch();
-			cout << "Data Aalysis \n";
-			break;
-		case 2:
-			cout << "Data Visualization \n";
-			break;
-		case 3:
-			FileExport();
-			cout << "program exited \n";
-			break;
-		default:
-			cout << "invalid input \n";
+	P1.setgauge(SampSize);
+	P2.setgauge(SampSize);
+	P3.setgauge(SampSize);
+	F1.setgauge(SampSize);
+	F1.set(Density, Dia1, Dia2);
 
-		}
-	} while (option != 3);
+	cout << "Pressure Gage 1 average =" << P1.getAvgdata() << endl
+		<< "Pressure Gage 2 average =" << P2.getAvgdata() << endl
+		<< "Pressure Gage 3 average =" << P3.getAvgdata() << endl
+		<< "Flow Meter 1 average =" << F1.getAvgdata() << endl;
+	 
+	cout << "Liquid Velocity =" << F1.getVelocity() << endl
+		<< "Volumetric Flow =" << F1.getVolflow() << endl
+		<< "Mass Flow =" << F1.getMassflow() << endl;
 
 	return;
 
 }
 
-void AvgDataSwitch()
+/*void AvgDataSwitch()
 {
 	int a;
 	int option;
@@ -291,9 +289,9 @@ void AvgDataSwitch()
 
 	return;
 
-}
+}*/
 
-void FileExport()
+/*void FileExport()
 {
 	char outFileName[16];
 	ofstream outStream;
@@ -320,19 +318,84 @@ void FileExport()
 	}
 	
 	return;
-}
+}*/
 
-void genData(double data, double highVal, double lowVal, int samples)
+void genArray()
 {
+	char opt;
+	int numSamples;
+	double samplePeriod;
+	double randSamples[10], averages[10], ranges[10];
 
+	cout << "Number of samples to generate (<= 10):";
+	cin >> numSamples;
+	for (int i = 0; i < numSamples; i++)
+	{
+		cout << "Average of value " << i << ": ";
+		cin >> averages[i];
+		cout << "Range of value " << i << ": ";
+		cin >> ranges[i];
+	}
+	cout << "Sample period (in sec):";
+	cin >> samplePeriod;
 	long int currentTime = static_cast<long int>(time(0)); //Generate random seed
 	srand(currentTime);
-	double avgVal = (highVal + lowVal) / 2;
-	double range = (highVal - lowVal);
 
-	for (int i = 0; i < samples; i++)
+
+	cout << "Enter any key to start \n";
+	cin >> opt;
+	for (int i = 0; i < MaxSampSize; i++)
 	{
-		data[i] = avgVal + rand() % range; // assign randome number
+		
+		genData(randSamples, averages, ranges, numSamples, samplePeriod);
+
+		P1.setArrayValue(i,randSamples[0]);
+		P2.setArrayValue(i,randSamples[1]);
+		P3.setArrayValue(i,randSamples[2]);
+		F1.setArrayValue(i, randSamples[3]);
+
+		/*double CurrentWL, CurrentWP, CurrentFR;
+
+		if (CurrentWL < systemAlarms.WaterLevel)
+		{
+			cout << "ALARM LOW WATER LEVEL \n";
+		}
+
+		if (CurrentWP > systemAlarms.WaterPressure)
+		{
+			cout << "ALARM HIGH WATER PRESSURE \n";
+		}
+
+		if (CurrentFR < systemAlarms.FlowRate)
+		{
+			cout << "ALARM LOW FLOW RATE \n";
+		}*/
+
+	}
+
+}
+
+void gentime()
+{
+	
+	
+	
+	
+	return;
+}
+
+void genData(double data[], double avgVal[], double rangeVal[], int numVal, double period)
+{
+
+	clock_t goal, now;
+	now = CLOCKS_PER_SEC;
+	now = clock();
+	goal = static_cast<clock_t>(1000 * period) * CLOCKS_PER_SEC / 1000;
+	while (goal > clock() - now)
+		;
+	for (int i = 0; i < numVal; i++)
+	{
+		data[i] = avgVal[i] - rangeVal[i] / 2 + (rand() % 1000)*rangeVal[i] / 1000; // assign random numbers
 	}
 
 

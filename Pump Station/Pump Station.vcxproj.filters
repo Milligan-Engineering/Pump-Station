@@ -18,21 +18,18 @@
     <ClCompile Include="Pump Station.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Guage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="flow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Documents\AY17_18\EENG221_S18\Programs\Test\Test\genData.cpp">
+    <ClCompile Include="Gauge.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Guage.h">
+    <ClInclude Include="flow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="flow.h">
+    <ClInclude Include="Gauge.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

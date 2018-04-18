@@ -6,36 +6,42 @@
 using namespace std;
 
 
-double Gauge::avgdata(double dataArray[], int arraysize)
+double Gauge::avgdata()
 {
 	double sum = 0;
 	double avgdata1;
 	int i;
 
-	for (i = 0; i < arraysize; i++)
+	for (i = 0; i < SampSize; i++)
 	{
-		sum += dataArray[i];
+		sum += DataArray[i];
 	}
-	avgdata1 = sum / arraysize;
-	return(avgdata1);
+	avgdata1 = sum / SampSize;
+	return(Avgdata);
 }
-
-//void Gauge::set(string Gaugename, double Gaugedata, int samplesize)
-//{
-	
-//}
 
 int Gauge::getSampSize()
 {
 	return SampSize;
 }
 
-double Gauge::getDataArray()
+double Gauge::getAvgdata()
 {
-	return DataArray;
+	return Avgdata;
 }
 
-
-Gauge::Gauge(int SampSize)
+void Gauge::setgauge(int SampleSize)
 {
+	SampSize = SampleSize;
+
+	return;
+}
+
+void Gauge::setArrayValue(int i,double data)
+{
+	
+		DataArray[i]=data;
+
+
+	return;
 }
