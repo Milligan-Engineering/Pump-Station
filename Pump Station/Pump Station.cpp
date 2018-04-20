@@ -206,6 +206,7 @@ void DataOptions()
 	cin >> Dia2;
 	cout << endl << "Enter the liquid density \n";
 	cin >> Density;
+	Density = Density * (0.000578704);
 	cout << endl << "Enter number of samples (<1000) \n";
 	cin >> SampSize;
 
@@ -333,11 +334,11 @@ void DataOptions()
 void genArray()
 {
 	char opt;
-	int numSamples;
-	double samplePeriod;
-	double randSamples[10], averages[10], ranges[10];
+	int numSamples = 4;
+	double samplePeriod = .0025;
+	double randSamples[10], averages[10] = { 20, 20, 20, 2.5 }, ranges[10] = { 15,15,15,1.5 };
 
-	cout << "Number of samples to generate (<= 10):";
+	/*cout << "Number of samples to generate (<= 10):";
 	cin >> numSamples;
 	for (int i = 0; i < numSamples; i++)
 	{
@@ -347,7 +348,7 @@ void genArray()
 		cin >> ranges[i];
 	}
 	cout << "Sample period (in sec):";
-	cin >> samplePeriod;
+	cin >> samplePeriod;*/
 	long int currentTime = static_cast<long int>(time(0)); //Generate random seed
 	srand(currentTime);
 

@@ -8,8 +8,7 @@ using namespace std;
 
 double flow::veloc()
 {
-	Gauge F1;
-	double numerator, denomenator, velocity;
+	double numerator, denomenator;
 	numerator = 2 * Avgdata;
 	denomenator = density * (1 - pow((D2 / D1),4));
 	velocity = sqrt(numerator / denomenator);
@@ -19,7 +18,7 @@ double flow::veloc()
 
 double flow::Area()
 {
-	area = (3.14159265 * pow(D2, 2)) / 2;
+	area = (3.14159265 * pow(D2, 2)) / 4;
 
 	return(area);
 }
