@@ -1,4 +1,5 @@
 #include "flow.h"
+#include "Gauge.h"
 #include <iostream>
 #include <string>
 #include <cmath>
@@ -9,7 +10,7 @@ double flow::veloc()
 {
 	Gauge F1;
 	double numerator, denomenator, velocity;
-	numerator = 2 * F1.getAvgdata();
+	numerator = 2 * Avgdata;
 	denomenator = density * (1 - pow((D1 / D2),4));
 	velocity = sqrt(numerator / denomenator);
 

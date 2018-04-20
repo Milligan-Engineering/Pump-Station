@@ -16,7 +16,7 @@ double Gauge::avgdata()
 	{
 		sum += DataArray[i];
 	}
-	avgdata1 = sum / SampSize;
+	Avgdata = sum / SampSize;
 	return(Avgdata);
 }
 

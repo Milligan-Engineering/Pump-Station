@@ -215,11 +215,21 @@ void DataOptions()
 	F1.setgauge(SampSize);
 	F1.set(Density, Dia1, Dia2);
 
+	P1.avgdata();
+	P2.avgdata();
+	P3.avgdata();
+	F1.avgdata();
+
 	cout << "Pressure Gage 1 average =" << P1.getAvgdata() << endl
 		<< "Pressure Gage 2 average =" << P2.getAvgdata() << endl
 		<< "Pressure Gage 3 average =" << P3.getAvgdata() << endl
 		<< "Flow Meter 1 average =" << F1.getAvgdata() << endl;
 	 
+	F1.veloc();
+	F1.Area();
+	F1.volflow();
+	F1.massflow();
+
 	cout << "Liquid Velocity =" << F1.getVelocity() << endl
 		<< "Volumetric Flow =" << F1.getVolflow() << endl
 		<< "Mass Flow =" << F1.getMassflow() << endl;
