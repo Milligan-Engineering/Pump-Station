@@ -11,7 +11,7 @@ double flow::veloc()
 	Gauge F1;
 	double numerator, denomenator, velocity;
 	numerator = 2 * Avgdata;
-	denomenator = density * (1 - pow((D1 / D2),4));
+	denomenator = density * (1 - pow((D2 / D1),4));
 	velocity = sqrt(numerator / denomenator);
 
 	return(velocity);

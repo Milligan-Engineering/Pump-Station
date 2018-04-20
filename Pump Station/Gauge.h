@@ -16,10 +16,12 @@ public:
 	int getSampSize();
 	double getAvgdata();
 
+protected:
+	double Avgdata;
 
 private:
 	string name;
-	double DataArray[1000], Avgdata;
+	double DataArray[1000];
 	int SampSize;
 
 };
