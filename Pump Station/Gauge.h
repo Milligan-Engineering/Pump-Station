@@ -8,20 +8,21 @@ using namespace std;
 class Gauge
 {
 public:
-	double avgdata(double dataArray[], int arraysize);
+	double avgdata();
 	// average data function
-	//void set(int SampSize, double DataArray[]);
+	void setgauge(int SampSize);
+	void setArrayValue(int i,double data);
 	double getDataArray();
 	int getSampSize();
-	Gauge(int SampSize);
+	double getAvgdata();
 
+protected:
+	double Avgdata;
 
 private:
 	string name;
-	double DataArray[MaxSampSize];
+	double DataArray[1000];
 	int SampSize;
 
-	
-	~Gauge();
 };
 
