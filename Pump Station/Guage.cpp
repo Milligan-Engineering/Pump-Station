@@ -30,6 +30,12 @@ int Guage::getSampSize()
 	return SampSize;
 }
 
+int Guage::setSampleSize(int ss)
+{
+	SampleSize = ss;
+	return(ss);
+}
+
 double Guage::getDataArray()
 {
 	return DataArray;
