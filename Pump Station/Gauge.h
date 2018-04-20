@@ -5,7 +5,7 @@
 #include <cstdlib>
 using namespace std;
 
-class Guage
+class Gauge
 {
 public:
 	double avgdata(double dataArray[], int arraysize);
@@ -13,15 +13,15 @@ public:
 	//void set(int SampSize, double DataArray[]);
 	double getDataArray();
 	int getSampSize();
-	Guage(int SampSize);
+	Gauge(int SampSize);
 
 
 private:
 	string name;
-	double DataArray[];
+	double DataArray[MaxSampSize];
 	int SampSize;
 
 	
-	~Guage();
+	~Gauge();
 };
 

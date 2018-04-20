@@ -3,7 +3,7 @@
 // Email Address: jdcole@my.milligan.edu
 // Project Milestone: 7
 // Description: Control and measure pump flow station
-// Last Changed: March 14, 2018
+// Last Changed: April 13, 2018
 
 
 
@@ -12,15 +12,15 @@
 #include <cmath>
 #include <fstream>
 #include <cstdlib>
-#include <Gauge.h>
-#include <flow.h>
+#include "Gauge.h"
+#include "flow.h"
 using namespace std;
 
 double avgdata(double dataArray[], int arraysize);
 //precondition: array for the gauge passed through data array and sample size of the data array 
 //postcondition: we should get the average data of the specified data array returned through avgdata
 void StudentProgram();
-void TeacherSettings();
+//void TeacherSettings();
 void StudentSetup();
 void SystemControl(); 
 void DataOptions();
@@ -45,7 +45,7 @@ Alarms systemAlarms;
 int main()
 {
 
-	TeacherSettings();
+//	TeacherSettings();
 	StudentProgram();
 
 	return(0);
