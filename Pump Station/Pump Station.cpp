@@ -3,7 +3,7 @@
 // Email Address: jdcole@my.milligan.edu
 // Project Milestone: 9
 // Description: Control and measure pump flow station
-// Last Changed: March 23, 2018
+// Last Changed: April 23, 2018
 
 #include <iostream>
 #include <string>
@@ -16,9 +16,6 @@
 
 using namespace std;
 
-double avgdata(double dataArray[], int arraysize);
-//precondition: array for the gauge passed through data array and sample size of the data array 
-//postcondition: we should get the average data of the specified data array returned through avgdata
 void StudentProgram();
 //void TeacherSettings();
 void StudentSetup();
@@ -26,7 +23,6 @@ void SystemControl();
 void DataOptions();
 void genArray();
 //void AvgDataSwitch();
-void gentime();
 void FileExport();
 
 const int MaxSampSize = 1000;// max array size
@@ -370,15 +366,6 @@ void genArray()
 
 	}
 
-}
-
-void gentime()
-{
-	
-	
-	
-	
-	return;
 }
 
 void genData(double data[], double avgVal[], double rangeVal[], int numVal, double period)
