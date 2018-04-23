@@ -14,8 +14,8 @@
 #include <cmath>
 #include <fstream>
 #include <cstdlib>
-#include <Gauge.h>
-#include <flow.h>
+#include "Gauge.h"
+#include "flow.h"
 #include <time.h>   // Added for random number generation
 
 using namespace std;
