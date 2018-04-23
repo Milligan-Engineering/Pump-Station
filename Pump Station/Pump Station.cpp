@@ -3,7 +3,7 @@
 // Email Address: jdcole@my.milligan.edu
 // Project Milestone: 9
 // Description: Control and measure pump flow station
-// Last Changed: March 18, 2018
+// Last Changed: March 23, 2018
 
 #include <iostream>
 #include <string>
@@ -102,20 +102,6 @@ void StudentProgram()
 	inStream.close();
 	return;
 }*/
-
-double avgdata(double dataArray[], int arraysize)
-{
-	double sum = 0;
-	double avgdata1;
-	int i;
-	
-	for (i = 0; i < arraysize; i++)
-	{
-		sum += dataArray[i];
-	}
-	avgdata1 = sum / arraysize;
-	return(avgdata1);
-}
 
 void StudentSetup()
 {
