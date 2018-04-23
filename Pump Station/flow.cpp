@@ -1,34 +1,41 @@
 #include "flow.h"
+#include "Gauge.h"
 #include <iostream>
 #include <string>
 #include <cmath>
 #include <cstdlib>
 using namespace std;
 
-double flow::veloc(double avgpress, double density, double dia1, double dia2)
+double flow::veloc()
 {
-	double numerator, denomenator, velocity;
-	numerator = 2 * avgpress;
-	denomenator = density * (1 - pow((dia1 / dia2),4));
+	double numerator, denomenator;
+	numerator = 2 * Avgdata;
+	denomenator = density * (1 - pow((D2 / D1),4));
 	velocity = sqrt(numerator / denomenator);
 
 	return(velocity);
 }
 
-double flow::volflow(double area, double velocity)
+double flow::Area()
 {
-	double product,
-		product = area * velocity;
+	area = (3.14159265 * pow(D2, 2)) / 4;
 
-	return(product);
+	return(area);
 }
 
-double flow::massflow(double volflow, double density)
+double flow::volflow()
 {
-	double product;
-	product = volflow * density;
+		VolFlow = area * velocity;
 
-	return(product);
+	return(VolFlow);
+}
+
+double flow::massflow()
+{
+	
+	MassFlow = VolFlow * density;
+
+	return(MassFlow);
 }
 
 double flow::getDiameter1()
@@ -37,7 +44,7 @@ double flow::getDiameter1()
 }
 
 double flow::getDiameter2()
-{
+{ 
 	return D2;
 }
 
@@ -48,6 +55,26 @@ double flow::getDensity()
 
 
 
-flow::flow(double density,double Diameter1,double Diameter2)
+void flow::set(double Density,double Diameter1,double Diameter2)
 {
+	density = Density;
+	D1 = Diameter1;
+	D2 = Diameter2; 
+
+	return;
+}
+
+double flow::getVelocity()
+{
+	return velocity;
+}
+
+double flow::getMassflow()
+{
+	return MassFlow;
+}
+
+double flow::getVolflow()
+{
+	return VolFlow;
 }
