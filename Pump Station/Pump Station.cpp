@@ -3,7 +3,7 @@
 // Email Address: jdcole@my.milligan.edu
 // Project Milestone: 9
 // Description: Control and measure pump flow station
-// Last Changed: April 23, 2018
+// Last Changed: April 25, 2018
 
 #include <iostream>
 #include <string>
@@ -22,10 +22,9 @@ void StudentSetup();
 void SystemControl(); 
 void DataOptions();
 void genArray();
-//void AvgDataSwitch();
-void FileExport();
+//void FileExport();
 
-const int MaxSampSize = 1000;// max array size
+const int MaxSampSize = 50;// max array size
 /*double pressure1[MaxSampSize] = { 3.6,6.8,5,2.4,9.4,5,8.5,4.5,7.2,9.5,22,4.5,2,15,6.5 };
 double pressure2[MaxSampSize] = { 3.9,2.2,8.9,5.6,4.2,5,6,4,5,8,5,5.5,10,4.5,6.3 };
 double pressure3[MaxSampSize] = { 1.5,6.5,4.3,8.6,7.6,5.4,8,2.5,2.7,6.5,10,2,5,8,9 };
@@ -221,69 +220,6 @@ void DataOptions()
 
 }
 
-/*void AvgDataSwitch()
-{
-	int a;
-	int option;
-
-	do
-	{
-	// NOT USING OBJECTS
-		
-		cout << "Enter how many samples you want per minute" << endl;
-		cin >> sampleSize;
-		if (sampleSize > MaxSampSize)
-		{
-			cout << "Invalid sample size try agian" << endl;
-		}
-		else
-		{
-			cout << "Enter 1 to continue" << endl;
-			cin >> a;
-		}
-	} while (a != 1);
-
-	do
-	{
-		cout << "Pick one of the following option for more Data, \n"
-			<< "1 - Pressure gauge 1, \n"
-			<< "2 - Pressure gauge 2, \n"
-			<< "3 - Pressure gauge 3, \n"
-			<< "4 - Flow rate gauge, \n"
-			<< "5 - If you want to exit, \n"
-			<< "Enter which data you want, \n";
-
-		cin >> option;
-		cout << endl;
-
-		switch (option)
-		{
-		case 1:
-// NOT USING MEMBER FUNCTIONS
-			cout << endl << "the average presseure from gauge 1 is: \n" << endl << avgdata(pressure1, sampleSize) << endl << endl;
-			break;
-		case 2:
-			cout << endl << "the average presseure from gauge 2 is: \n" << endl << avgdata(pressure2, sampleSize) << endl << endl;
-			break;
-		case 3:
-			cout << endl << "the average presseure from gauge 3 is: \n" << endl << avgdata(pressure3, sampleSize) << endl << endl;
-			break;
-		case 4:
-			cout << endl << "the average flow rate is: \n" << endl << avgdata(flow, sampleSize) << endl << endl;
-			break;
-		case 5:
-			cout << "you have exited" << endl;
-			break;
-		default:
-			cout << "invalid input, \n" << endl;
-
-		}
-	} while (option != 5);
-
-	return;
-
-}*/
-
 /*void FileExport()
 {
 	char outFileName[16];
@@ -317,8 +253,8 @@ void genArray()
 {
 	char opt;
 	int numSamples = 4;
-	double samplePeriod = .0025;
-	double randSamples[10], averages[10] = { 20, 20, 20, 2.5 }, ranges[10] = { 15,15,15,1.5 };
+	double samplePeriod = .5;
+	double randSamples[10], averages[10] = { 30, 20, 20, 2.5 }, ranges[10] = { 15,15,15,2.2 };
 
 	/*cout << "Number of samples to generate (<= 10):";
 	cin >> numSamples;
@@ -347,22 +283,30 @@ void genArray()
 		P3.setArrayValue(i,randSamples[2]);
 		F1.setArrayValue(i, randSamples[3]);
 
-		/*double CurrentWL, CurrentWP, CurrentFR;
-
-		if (CurrentWL < systemAlarms.WaterLevel)
+		
+		
+		if (randSamples[0] > systemAlarms.WaterPressure)
 		{
-			cout << "ALARM LOW WATER LEVEL \n";
+			cout << i+1 << ":ALARM P1 HIGH WATER PRESSURE \n";
+		}
+		if(randSamples[1] > systemAlarms.WaterPressure)
+		{
+			cout << i + 1 << ":ALARM P2 HIGH WATER PRESSURE \n";
+		}
+		if(randSamples[2] > systemAlarms.WaterPressure)
+		{
+			cout << i + 1 << ":ALARM P3 HIGH WATER PRESSURE \n";
+		}
+		if(randSamples[3] < systemAlarms.FlowRate)
+		{
+			cout << i+1 << ":ALARM F1 LOW FLOW RATE \n";
+		}
+		
+		else
+		{
+			cout << i + 1 << "\r";
 		}
 
-		if (CurrentWP > systemAlarms.WaterPressure)
-		{
-			cout << "ALARM HIGH WATER PRESSURE \n";
-		}
-
-		if (CurrentFR < systemAlarms.FlowRate)
-		{
-			cout << "ALARM LOW FLOW RATE \n";
-		}*/
 
 	}
 
