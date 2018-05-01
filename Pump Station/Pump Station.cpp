@@ -17,22 +17,14 @@
 using namespace std;
 
 void StudentProgram();
-//void TeacherSettings();
+void TeacherSettings();
 void StudentSetup();
 void SystemControl(); 
 void DataOptions();
 void genArray();
-//void FileExport();
+void FileExport();
 
-const int MaxSampSize = 50;// max array size
-/*double pressure1[MaxSampSize] = { 3.6,6.8,5,2.4,9.4,5,8.5,4.5,7.2,9.5,22,4.5,2,15,6.5 };
-double pressure2[MaxSampSize] = { 3.9,2.2,8.9,5.6,4.2,5,6,4,5,8,5,5.5,10,4.5,6.3 };
-double pressure3[MaxSampSize] = { 1.5,6.5,4.3,8.6,7.6,5.4,8,2.5,2.7,6.5,10,2,5,8,9 };
-double flow[MaxSampSize] = { 1.2,7.5,8,6.5,9.4,7.6,8.5,4,5,7.6,8,15,16,2,6.5 };
-int SampleTime[MaxSampSize] = { 5,10,15,20,25,30,35,40,45,50,55,60,65,70,75 };
-int sampleSize;*/
-// Structure is technically Ok but does not seem very useful. Structures are more geared toward collecting data
-// that is of different types/nature. Would  NumberofSamples, SamplingRate, and SampleDuration be a better candidate?
+const int maxUsers = 4;
 
 void genData(double data[], double avgVal[], double rangeVal[], int numVal, double period);
 //Preconditions: The high and low values of the generated data are given in highVal and lowVal
@@ -40,6 +32,16 @@ void genData(double data[], double avgVal[], double rangeVal[], int numVal, doub
 //				The properly sized array, data, should be declared.
 //				The interval between samples is given in period in seconds.
 //Postcondtions: Uniform random numbers are stored in data at an interval given by rate.
+struct Student
+{
+	string date;
+	string project;
+	string Class;
+	string user[maxUsers];
+	int numUsers;
+};
+
+Student systemSetup;
 
 struct Alarms
 {
@@ -54,14 +56,12 @@ Gauge P2;
 Gauge P3;
 flow F1;
 
-//No Guage objects declared.
-//No Flow ojects declared.
-
 int main()
 {
 	char opt;
-	//TeacherSettings();
+	TeacherSettings();
 	StudentProgram();
+	FileExport();
 	cout << "Enter any key to exit \n";
 	cin >> opt;
 
@@ -75,7 +75,7 @@ void StudentProgram()
 	DataOptions();
 }
 
-/*void TeacherSettings() 
+void TeacherSettings() 
 {
 	char inFileName[16];
 
@@ -83,44 +83,39 @@ void StudentProgram()
 	
 	cout << "Enter in the file you wish to import (maximum of 15 characters): \n";
 	cin >> inFileName;
+	strcat_s(inFileName, ".txt");
 
 	inStream.open(inFileName);
 	if (inStream.fail())
+	{
 		cout << "Input file opening failed. \n";
 		char wait;
 		cin >> wait;
 		exit(1);
 	}
 	
-	inStream >> WaterLevel >> WaterPressure >> FlowRate;
+	inStream >> systemAlarms.WaterLevel >> systemAlarms.WaterPressure >> systemAlarms.FlowRate;
 	
 	inStream.close();
 	return;
-}*/
+}
 
 void StudentSetup()
 {
-	string date;
-	string project;
-	string Class;
-	const int maxUsers = 4;
-	string user[maxUsers];
-	int numUsers;
-
 	do
 	{
 		cout << "enter number of users (between 1-4) " << endl << endl;
-		cin >> numUsers;
+		cin >> systemSetup.numUsers;
 		cout << endl;
-	} while ((numUsers <= 0) || (numUsers >= 5));
+	} while ((systemSetup.numUsers <= 0) || (systemSetup.numUsers >= 5));
 
 	int i = 0;
 
-	while (i < numUsers)
+	while (i < systemSetup.numUsers)
 	{
-		cout << "enter username no spaces" << endl << endl;
-		cin >> user[i];
-		cout << endl << "user " << i + 1 << " is " << user[i] << endl << endl;
+		cout << "enter username (no spaces)" << endl << endl;
+		cin >> systemSetup.user[i];
+		cout << endl << "user " << i + 1 << " is " << systemSetup.user[i] << endl << endl;
 
 		i++;
 
@@ -128,24 +123,40 @@ void StudentSetup()
 
 
 	cout << "enter date" << endl << endl;
-	cin >> date;
+	cin >>systemSetup.date;
 	cout << endl;
 
-	cout << "enter project name" << endl << endl;
-	cin >> project;
+	cout << "enter project name(no spaces)" << endl << endl;
+	cin >> systemSetup.project;
 	cout << endl;
 
-	cout << "enter class name" << endl << endl;
-	cin >> Class;
+	cout << "enter class name(no spaces)" << endl << endl;
+	cin >> systemSetup.Class;
 	cout << endl;
+	
+	char j;
+	
+	do
+	{	
+		cout << "Would you like to use default alarm settings or enter in your own? \n"
+			<< "Enter 1 for Default \n"
+			<< "Enter 2 for Manual inputs \n";
+		cin >> j;
 
-	cout << "Enter Low Water Level Alarm \n";
-	cin >> systemAlarms.WaterLevel;
-	cout << endl<< "Enter High Water Pressure Alarm \n";
-	cin >> systemAlarms.WaterPressure;
-	cout << endl << "Enter Low Flow Rate Alarm \n";
-	cin >> systemAlarms.FlowRate;
-
+		if (j == '1')
+		{
+			cout << "Alarms set to default \n";
+		}
+		else if(j == '2')
+		{
+			cout << "Enter Low Water Level Alarm \n";
+			cin >> systemAlarms.WaterLevel;
+			cout << endl << "Enter High Water Pressure Alarm \n";
+			cin >> systemAlarms.WaterPressure;
+			cout << endl << "Enter Low Flow Rate Alarm \n";
+			cin >> systemAlarms.FlowRate;
+		}
+	} while (j != '1' && j != '2');
 
 	return;
 }
@@ -167,6 +178,7 @@ void SystemControl()
 		break;
 	default:
 		cout << "system shut off \n" << endl;	
+		terminate();
 	}
 	
 	genArray();
@@ -179,7 +191,6 @@ void SystemControl()
 void DataOptions()
 {
 	double Density, Dia1, Dia2;
-	int SampSize;
 
 	cout << "Enter the outer Diameter \n";
 	cin >> Dia1;
@@ -188,13 +199,7 @@ void DataOptions()
 	cout << endl << "Enter the liquid density \n";
 	cin >> Density;
 	Density = Density * (0.000578704);
-	cout << endl << "Enter number of samples (<1000) \n";
-	cin >> SampSize;
 
-	P1.setgauge(SampSize);
-	P2.setgauge(SampSize);
-	P3.setgauge(SampSize);
-	F1.setgauge(SampSize);
 	F1.set(Density, Dia1, Dia2);
 
 	P1.avgdata();
@@ -220,12 +225,13 @@ void DataOptions()
 
 }
 
-/*void FileExport()
+void FileExport()
 {
 	char outFileName[16];
 	ofstream outStream;
 	cout << "Enter file to export to (maximun 15 characters): \n";
 	cin >> outFileName;
+	strcat_s(outFileName, ".csv");
 	cout << endl << "Data will export to file " << outFileName << endl;
 
 	outStream.open(outFileName);
@@ -236,24 +242,32 @@ void DataOptions()
 		cin >> wait;
 		exit(1);
 	}
-
-	outStream << "Gauge ," << "P1 ," << "P2 ," << "P3 ," << "F1 ," << endl
-		<< "Average ," << avgdata(pressure1, sampleSize) << "," << avgdata(pressure2, sampleSize) << ","
-		<< avgdata(pressure3, sampleSize) << "," << avgdata(flow, sampleSize) << endl;
-	for (int i = 0; i < sampleSize; i++)
+	
+	outStream << "Users ,";
+	for (int i = 0; i < systemSetup.numUsers; i++)
 	{
-		outStream << SampleTime[i] << "," << pressure1[i] << "," << pressure2[i] << "," << pressure3[i] << ","
-			<< flow[i] << endl;
+		outStream << systemSetup.user[i] << ",";
+	}
+
+	outStream <<endl<<"Date ," << systemSetup.date << endl << "Class Name ," << systemSetup.Class << endl<< "Project Name ," << systemSetup.project <<endl
+		<< "P1 Average ," << P1.getAvgdata() << ", PSI"<< endl << "P2 Average," << P2.getAvgdata() << ", PSI" << endl << "P3 Average ," << P3.getAvgdata() << ", PSI" << endl
+		<< "F1 Average," << F1.getAvgdata() << ", PSI" << endl << "Velocity ," << F1.getVelocity()<< ", ft/sec^2" << endl << "Volumetric Flow ," << F1.getVolflow() << ", ft^3/sec" << endl
+		<<"Mass Flow ," << F1.getMassflow()<<", lbm/sec"<< endl<< endl<<"Sample Number ,"<<"P1 ,"<< "P2 ," << "P3 ," <<"F1"<<endl;
+
+	for (int i = 0; i < P1.getSampSize() ; i++)
+	{
+		outStream << i+1 << "," << P1.getDataArray(i) << "," << P2.getDataArray(i) << "," << P3.getDataArray(i) << ","
+			<< F1.getDataArray(i) << endl;
 	}
 	
 	return;
-}*/
+}
 
 void genArray()
 {
 	char opt;
-	int numSamples = 4;
-	double samplePeriod = .5;
+	int SampSize,numSamples = 4;
+	double runtime, samplePeriod;
 	double randSamples[10], averages[10] = { 30, 20, 20, 2.5 }, ranges[10] = { 15,15,15,2.2 };
 
 	/*cout << "Number of samples to generate (<= 10):";
@@ -264,16 +278,24 @@ void genArray()
 		cin >> averages[i];
 		cout << "Range of value " << i << ": ";
 		cin >> ranges[i];
-	}
+	}*/
 	cout << "Sample period (in sec):";
-	cin >> samplePeriod;*/
+	cin >> samplePeriod;
+	cout <<endl<< "Enter run time (in sec):";
+	cin >> runtime;
+
+	SampSize = runtime / samplePeriod;
+	P1.setgauge(SampSize);
+	P2.setgauge(SampSize);
+	P3.setgauge(SampSize);
+	F1.setgauge(SampSize);
+
 	long int currentTime = static_cast<long int>(time(0)); //Generate random seed
 	srand(currentTime);
 
-
 	cout << "Enter any key to start \n";
 	cin >> opt;
-	for (int i = 0; i < MaxSampSize; i++)
+	for (int i = 0; i < SampSize; i++)
 	{
 		
 		genData(randSamples, averages, ranges, numSamples, samplePeriod);

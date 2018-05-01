@@ -36,11 +36,29 @@ void Gauge::setgauge(int SampleSize)
 	return;
 }
 
-void Gauge::setArrayValue(int i,double data)
+
+double Gauge::getDataArray(int i)
 {
-	
-		DataArray[i]=data;
+	return(DataArray[i]);
+}
+
+Gauge::Gauge()
+{
+	value = new double[SampSize];
+
+}
+
+void Gauge::setArrayValue(int i, double data)
+{
+
+	value[i] = data;
 
 
 	return;
+}
+
+
+Gauge ::~Gauge()
+{
+	delete[] value;
 }
