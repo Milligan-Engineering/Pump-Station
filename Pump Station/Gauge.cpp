@@ -13,7 +13,7 @@ double Gauge::avgdata()
 
 	for (i = 0; i < SampSize; i++)
 	{
-		sum += DataArray[i];
+		sum += value[i];
 	}
 	Avgdata = sum / SampSize;
 	return(Avgdata);
@@ -33,6 +33,8 @@ void Gauge::setgauge(int SampleSize)
 {
 	SampSize = SampleSize;
 
+	value = new double[SampSize];
+
 	return;
 }
 
@@ -44,7 +46,7 @@ double Gauge::getDataArray(int i)
 
 Gauge::Gauge()
 {
-	value = new double[SampSize];
+	
 
 }
 

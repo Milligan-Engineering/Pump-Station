@@ -18,10 +18,15 @@ using namespace std;
 
 void StudentProgram();
 void TeacherSettings();
+// inputs default setitings
 void StudentSetup();
+// students name ,date ,class
 void SystemControl(); 
+// truns system on 
 void DataOptions();
+// User inputs general data
 void genArray();
+// generates array for gauge data
 void FileExport();
 
 const int maxUsers = 4;
@@ -268,7 +273,7 @@ void genArray()
 	char opt;
 	int SampSize,numSamples = 4;
 	double runtime, samplePeriod;
-	double randSamples[10], averages[10] = { 30, 20, 20, 2.5 }, ranges[10] = { 15,15,15,2.2 };
+	double randSamples[10], averages[10] = { 28, 28, 28, 2.0 }, ranges[10] = { 15,15,15,2.2 };
 
 	/*cout << "Number of samples to generate (<= 10):";
 	cin >> numSamples;
