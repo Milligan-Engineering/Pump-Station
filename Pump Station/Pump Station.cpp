@@ -1,9 +1,9 @@
 // File name: Pump station
 // Author: John Cole
 // Email Address: jdcole@my.milligan.edu
-// Project Milestone: 9
+// Project Milestone: Final
 // Description: Control and measure pump flow station
-// Last Changed: April 25, 2018
+// Last Changed: May 2, 2018
 
 #include <iostream>
 #include <string>
@@ -12,7 +12,7 @@
 #include <cstdlib>
 #include "Gauge.h"
 #include "flow.h"
-#include <time.h>   // Added for random number generation
+#include <time.h>   
 
 using namespace std;
 
@@ -154,12 +154,23 @@ void StudentSetup()
 		}
 		else if(j == '2')
 		{
-			cout << "Enter Low Water Level Alarm \n";
-			cin >> systemAlarms.WaterLevel;
-			cout << endl << "Enter High Water Pressure Alarm \n";
-			cin >> systemAlarms.WaterPressure;
-			cout << endl << "Enter Low Flow Rate Alarm \n";
-			cin >> systemAlarms.FlowRate;
+			do
+			{
+				cout << "Enter Low Water Level Alarm \n";
+				cin >> systemAlarms.WaterLevel;
+			} while (systemAlarms.WaterLevel <= 9 && systemAlarms.WaterLevel >= 23);
+
+			do
+			{
+				cout << endl << "Enter High Water Pressure Alarm \n";
+				cin >> systemAlarms.WaterPressure;
+			} while (systemAlarms.WaterPressure < 30);
+
+			do
+			{
+				cout << endl << "Enter Low Flow Rate Alarm \n";
+				cin >> systemAlarms.FlowRate;
+			} while (systemAlarms.FlowRate > 0.5);
 		}
 	} while (j != '1' && j != '2');
 
@@ -197,12 +208,24 @@ void DataOptions()
 {
 	double Density, Dia1, Dia2;
 
-	cout << "Enter the outer Diameter \n";
-	cin >> Dia1;
-	cout << endl << "Enter the inner Diameter \n";
-	cin >> Dia2;
-	cout << endl << "Enter the liquid density \n";
-	cin >> Density;
+	do
+	{
+		cout << "Enter the outer Diameter \n";
+		cin >> Dia1;
+	} while (Dia1 <= 0 && Dia1 > 3);
+
+	do
+	{
+		cout << endl << "Enter the inner Diameter \n";
+		cin >> Dia2;
+	} while (Dia2 <= 0 && Dia2 >= Dia1);
+
+	do
+	{
+		cout << endl << "Enter the liquid density \n";
+		cin >> Density;
+	} while (Density <= 0);
+
 	Density = Density * (0.000578704);
 
 	F1.set(Density, Dia1, Dia2);
@@ -284,10 +307,17 @@ void genArray()
 		cout << "Range of value " << i << ": ";
 		cin >> ranges[i];
 	}*/
-	cout << "Sample period (in sec):";
-	cin >> samplePeriod;
-	cout <<endl<< "Enter run time (in sec):";
-	cin >> runtime;
+	do
+	{
+		cout << "Sample period (in sec):";
+		cin >> samplePeriod;
+	} while (samplePeriod <= 0);
+
+	do
+	{
+		cout << endl << "Enter run time (in sec):";
+		cin >> runtime;
+	} while (runtime <= 0);
 
 	SampSize = runtime / samplePeriod;
 	P1.setgauge(SampSize);
