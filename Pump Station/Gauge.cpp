@@ -41,7 +41,7 @@ void Gauge::setgauge(int SampleSize)
 
 double Gauge::getDataArray(int i)
 {
-	return(DataArray[i]);
+	return(value[i]);
 }
 
 Gauge::Gauge()
